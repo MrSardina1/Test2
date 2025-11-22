@@ -1,0 +1,11 @@
+<h2>Comments Moderation</h2>
+
+<div class="comment" *ngFor="let c of comments; let i = index">
+  <p>{{ c.text }}</p>
+
+  <button (click)="approve(c)" [disabled]="c.approved">
+    {{ c.approved ? 'Approved' : 'Approve' }}
+  </button>
+
+  <button class="delete" (click)="remove(i)">Delete</button>
+</div>

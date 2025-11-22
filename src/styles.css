@@ -1,1 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
+body {
+  padding-top: 70px;
+}
+
+.site-card{
+  transition: transform .15s ease-in-out;
+}
+
+.site-card:hover{
+  transform: translateY(-4px);
+}
+
+.highlight{
+  background-color: yellow;
+}

@@ -1,0 +1,30 @@
+{
+  "sites": [
+    {
+      "id": "1",
+      "name": "Médina de Tunis",
+      "localisation": "Tunis",
+      "photo": "assets/images/medina.jpg",
+      "dateConstruction": "1600-01-01T00:00:00.000Z",
+      "estClasse": true,
+      "prixEntree": 0,
+      "description": "Ancienne médina historique...",
+      "categorie": "Médina",
+      "horaires": ["9:00-17:00", "Lun-Ferme"],
+      "visitesGuideesDisponibles": true,
+      "lieuxProches": [{"nom":"Mosquée Zitouna","type":"Religieux","distanceKm":0.1}],
+      "latitude": 36.8065,
+      "longitude": 10.1815,
+      "comments": []
+    }
+  ],
+  "users": [
+    {
+      "id": "admin-1",
+      "username": "admin",
+      "passwordHash": "admin123",
+      "role": "admin",
+      "dernierLogin": null
+    }
+  ]
+}

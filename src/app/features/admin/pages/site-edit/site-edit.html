@@ -1,0 +1,11 @@
+<h2>Edit Site</h2>
+
+<form (submit)="save(); $event.preventDefault()">
+  <label>Name</label>
+  <input type="text" [(ngModel)]="name" name="name" />
+
+  <label>Location</label>
+  <input type="text" [(ngModel)]="location" name="location" />
+
+  <button type="submit">Save</button>
+</form>

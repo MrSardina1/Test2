@@ -1,0 +1,12 @@
+<h2>Manage Sites</h2>
+
+<a routerLink="/admin/site-edit" class="add-btn">+ Add Site</a>
+
+<ul>
+  <li *ngFor="let s of sites; let i = index">
+    {{ s.name }}
+
+    <a [routerLink]="['/admin/site-edit', s.id]">Edit</a>
+    <button (click)="delete(i)">Delete</button>
+  </li>
+</ul>
