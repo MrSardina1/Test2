@@ -1,15 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
-import { UserManagement } from '../../../../core/services/user-management.service';
-import { UtilisateurAdmin } from '../../../../code/models/utilisateur-admin.model';
-import { Utilisateur } from '../../../../code/models/utilisateur';
-import { Auth } from '../../../../code/services/auth';
 import { HttpClient } from '@angular/common/http';
 import { forkJoin } from 'rxjs';
 
-type AllUsers = (UtilisateurAdmin | Utilisateur) & { userType: 'admin' | 'user' };
+interface User {
+  id: string;
+  username: string;
+  email: string;
+  fullName: string;
+  avatar?: string;
+  phone?: string;
+  dateCreated: string;
+  dernierLogin: string | null;
+  isActive: boolean;
+  role?: string;
+  type: 'admin' | 'user';
+}
 
 @Component({
   selector: 'app-user-management',
@@ -19,22 +26,21 @@ type AllUsers = (UtilisateurAdmin | Utilisateur) & { userType: 'admin' | 'user' 
   styleUrls: ['./user-management.css']
 })
 export class UserManagementComponent implements OnInit {
-  allUsers: AllUsers[] = [];
-  filteredUsers: AllUsers[] = [];
+  allUsers: User[] = [];
+  filteredUsers: User[] = [];
+
   showForm = false;
   editingId: string | null = null;
-  editingType: 'admin' | 'user' | null = null;
   searchTerm = '';
   filterRole = '';
   filterStatus = '';
-  filterType = ''; // Pour filtrer par type (admin/user)
 
   formData: {
     username: string;
     email: string;
     password: string;
     fullName: string;
-    role: 'super_admin' | 'moderator' | 'editor' | 'user';
+    role: string;
     avatar: string;
     phone: string;
   } = {
@@ -47,44 +53,27 @@ export class UserManagementComponent implements OnInit {
     phone: ''
   };
 
-  constructor(
-    private userManagement: UserManagement,
-    private auth: Auth,
-    private http: HttpClient,
-    private router: Router
-  ) {}
+  private baseAdmins = 'http://localhost:3000/admins';
+  private baseUsers = 'http://localhost:3000/users';
+
+  constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    this.loadAllUsers();
+    this.loadUsers();
   }
 
-  loadAllUsers() {
-    // Charger les admins et les users en parallèle
+  loadUsers() {
     forkJoin({
-      admins: this.http.get<UtilisateurAdmin[]>('http://localhost:3000/admins'),
-      users: this.http.get<Utilisateur[]>('http://localhost:3000/users')
+      admins: this.http.get<User[]>(this.baseAdmins),
+      users: this.http.get<User[]>(this.baseUsers)
     }).subscribe({
-      next: ({ admins, users }) => {
-        // Marquer les admins
-        const adminsWithType: AllUsers[] = admins.map(admin => ({
-          ...admin,
-          userType: 'admin' as const
-        }));
-
-        // Marquer les users (ajouter le champ role: 'user')
-        const usersWithType: AllUsers[] = users.map(user => ({
-          ...user,
-          role: 'user' as any,
-          userType: 'user' as const
-        }));
-
-        // Combiner les deux listes
-        this.allUsers = [...adminsWithType, ...usersWithType];
+      next: (result) => {
+        const admins = result.admins.map(a => ({ ...a, type: 'admin' as const }));
+        const users = result.users.map(u => ({ ...u, type: 'user' as const, role: 'user' }));
+        this.allUsers = [...admins, ...users];
         this.applyFilters();
       },
-      error: (err) => {
-        console.error('Erreur lors du chargement des utilisateurs:', err);
-      }
+      error: (err) => console.error('Error loading users:', err)
     });
   }
 
@@ -95,7 +84,7 @@ export class UserManagementComponent implements OnInit {
         user.username.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         user.email.toLowerCase().includes(this.searchTerm.toLowerCase());
 
-      const matchRole = !this.filterRole || this.getUserRole(user) === this.filterRole;
+      const matchRole = !this.filterRole || user.role === this.filterRole;
 
       let matchStatus = true;
       if (this.filterStatus === 'active') {
@@ -104,17 +93,8 @@ export class UserManagementComponent implements OnInit {
         matchStatus = user.isActive === false;
       }
 
-      const matchType = !this.filterType || user.userType === this.filterType;
-
-      return matchSearch && matchRole && matchStatus && matchType;
+      return matchSearch && matchRole && matchStatus;
     });
-  }
-
-  getUserRole(user: AllUsers): string {
-    if (user.userType === 'admin') {
-      return (user as UtilisateurAdmin).role;
-    }
-    return 'user';
   }
 
   getTotalUsers(): number {
@@ -129,35 +109,28 @@ export class UserManagementComponent implements OnInit {
     return this.allUsers.filter(u => !u.isActive).length;
   }
 
-  getAdminCount(): number {
-    return this.allUsers.filter(u => u.userType === 'admin').length;
+  getTotalAdmins(): number {
+    return this.allUsers.filter(u => u.type === 'admin').length;
   }
 
-  getUserCount(): number {
-    return this.allUsers.filter(u => u.userType === 'user').length;
-  }
-
-  viewUserProfile(user: AllUsers) {
-    // Rediriger vers la page de profil de l'utilisateur
-    this.router.navigate(['/user', user.id]);
+  getTotalRegularUsers(): number {
+    return this.allUsers.filter(u => u.type === 'user').length;
   }
 
   openAddForm() {
     this.editingId = null;
-    this.editingType = null;
     this.resetForm();
     this.showForm = true;
   }
 
-  openEditForm(user: AllUsers) {
+  openEditForm(user: User) {
     this.editingId = user.id;
-    this.editingType = user.userType;
     this.formData = {
       username: user.username,
       email: user.email,
       password: '',
       fullName: user.fullName,
-      role: this.getUserRole(user) as any,
+      role: user.role || 'user',
       avatar: user.avatar || '',
       phone: user.phone || ''
     };
@@ -178,47 +151,38 @@ export class UserManagementComponent implements OnInit {
 
   saveUser() {
     if (!this.formData.username || !this.formData.email || !this.formData.fullName) {
-      alert('Veuillez remplir tous les champs obligatoires');
+      alert('Please fill all required fields');
       return;
     }
 
-    const isAdmin = this.formData.role !== 'user';
-    const baseUrl = isAdmin ? 'http://localhost:3000/admins' : 'http://localhost:3000/users';
-
     if (this.editingId) {
-      // Mode édition
-      const url = this.editingType === 'admin'
-        ? `http://localhost:3000/admins/${this.editingId}`
-        : `http://localhost:3000/users/${this.editingId}`;
+      const user = this.allUsers.find(u => u.id === this.editingId);
+      if (!user) return;
 
-      this.http.get<any>(url).subscribe(original => {
-        const updated: any = {
-          ...original,
-          username: this.formData.username,
-          email: this.formData.email,
-          fullName: this.formData.fullName,
-          avatar: this.formData.avatar,
-          phone: this.formData.phone
-        };
+      const baseUrl = user.type === 'admin' ? this.baseAdmins : this.baseUsers;
+      const updated: any = {
+        ...user,
+        username: this.formData.username,
+        email: this.formData.email,
+        fullName: this.formData.fullName,
+        avatar: this.formData.avatar || `https://i.pravatar.cc/150?u=${this.formData.username}`,
+        phone: this.formData.phone
+      };
 
-        if (this.editingType === 'admin') {
-          updated.role = this.formData.role;
-        }
+      if (this.formData.password) {
+        updated.password = this.formData.password;
+      }
 
-        if (this.formData.password) {
-          updated.password = this.formData.password;
-        }
-
-        this.http.put(url, updated).subscribe(() => {
-          alert('Utilisateur mis à jour avec succès');
-          this.loadAllUsers();
+      this.http.put(`${baseUrl}/${this.editingId}`, updated).subscribe({
+        next: () => {
+          this.loadUsers();
           this.showForm = false;
-        });
+        },
+        error: (err) => console.error('Error updating user:', err)
       });
     } else {
-      // Mode création
       if (!this.formData.password) {
-        alert('Le mot de passe est obligatoire pour un nouvel utilisateur');
+        alert('Password is required for new users');
         return;
       }
 
@@ -234,16 +198,17 @@ export class UserManagementComponent implements OnInit {
         isActive: true
       };
 
-      if (isAdmin) {
+      const baseUrl = this.formData.role === 'admin' ? this.baseAdmins : this.baseUsers;
+      if (this.formData.role === 'admin') {
         newUser.role = this.formData.role;
-      } else {
-        newUser.favorites = [];
       }
 
-      this.http.post(baseUrl, newUser).subscribe(() => {
-        alert('Utilisateur créé avec succès');
-        this.loadAllUsers();
-        this.showForm = false;
+      this.http.post(baseUrl, newUser).subscribe({
+        next: () => {
+          this.loadUsers();
+          this.showForm = false;
+        },
+        error: (err) => console.error('Error creating user:', err)
       });
     }
   }
@@ -252,85 +217,51 @@ export class UserManagementComponent implements OnInit {
     this.showForm = false;
   }
 
-  deleteUser(user: AllUsers) {
-    const currentUser = this.auth.getUser();
-    if (currentUser?.id === user.id) {
-      alert('Vous ne pouvez pas supprimer votre propre compte');
-      return;
-    }
+  deleteUser(user: User) {
+    if (!confirm('Are you sure you want to delete this user?')) return;
 
-    if (!confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')) return;
-
-    const url = user.userType === 'admin'
-      ? `http://localhost:3000/admins/${user.id}`
-      : `http://localhost:3000/users/${user.id}`;
-
-    this.http.delete(url).subscribe(() => {
-      alert('Utilisateur supprimé avec succès');
-      this.loadAllUsers();
+    const baseUrl = user.type === 'admin' ? this.baseAdmins : this.baseUsers;
+    this.http.delete(`${baseUrl}/${user.id}`).subscribe({
+      next: () => {
+        this.loadUsers();
+      },
+      error: (err) => console.error('Error deleting user:', err)
     });
   }
 
-  toggleStatus(user: AllUsers) {
-    const currentUser = this.auth.getUser();
-    if (currentUser?.id === user.id) {
-      alert('Vous ne pouvez pas désactiver votre propre compte');
-      return;
-    }
-
-    const url = user.userType === 'admin'
-      ? `http://localhost:3000/admins/${user.id}`
-      : `http://localhost:3000/users/${user.id}`;
-
+  toggleStatus(user: User) {
+    const baseUrl = user.type === 'admin' ? this.baseAdmins : this.baseUsers;
     const updated = { ...user, isActive: !user.isActive };
-    delete (updated as any).userType;
-
-    this.http.put(url, updated).subscribe(() => {
-      this.loadAllUsers();
+    this.http.put(`${baseUrl}/${user.id}`, updated).subscribe({
+      next: () => {
+        this.loadUsers();
+      },
+      error: (err) => console.error('Error updating user status:', err)
     });
   }
 
-  getRoleBadgeClass(user: AllUsers): string {
-    const role = this.getUserRole(user);
+  getRoleBadgeClass(role: string): string {
     const classes: { [key: string]: string } = {
-      'super_admin': 'role-super-admin',
-      'moderator': 'role-moderator',
-      'editor': 'role-editor',
+      'admin': 'role-admin',
       'user': 'role-user'
     };
     return classes[role] || 'role-user';
   }
 
-  getRoleLabel(user: AllUsers): string {
-    const role = this.getUserRole(user);
-    const labels: { [key: string]: string } = {
-      'super_admin': 'Super Admin',
-      'moderator': 'Modérateur',
-      'editor': 'Éditeur',
-      'user': 'Utilisateur'
-    };
-    return labels[role] || role;
+  getRoleLabel(role: string): string {
+    return role.charAt(0).toUpperCase() + role.slice(1);
   }
 
   getTimeSinceLogin(date: string | null): string {
-    if (!date) return 'Jamais connecté';
-
+    if (!date) return 'Never logged in';
     const now = new Date();
     const loginDate = new Date(date);
     const diff = now.getTime() - loginDate.getTime();
     const hours = Math.floor(diff / (1000 * 60 * 60));
     const days = Math.floor(hours / 24);
 
-    if (days > 0) return `Il y a ${days} jour${days > 1 ? 's' : ''}`;
-    if (hours > 0) return `Il y a ${hours} heure${hours > 1 ? 's' : ''}`;
-    return 'Récemment';
-  }
-
-  getTypeBadge(user: AllUsers): string {
-    return user.userType === 'admin' ? 'Admin' : 'User';
-  }
-
-  getTypeBadgeClass(user: AllUsers): string {
-    return user.userType === 'admin' ? 'badge-admin' : 'badge-user';
+    if (days > 0) return `${days} day${days > 1 ? 's' : ''} ago`;
+    if (hours > 0) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+    return 'Recently';
   }
 }

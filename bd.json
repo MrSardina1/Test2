@@ -27,19 +27,33 @@
       "comments": [
         {
           "id": "c1",
+          "userId": "user-1",
           "nom": "Ahmed Ben Ali",
           "message": "Magnifique endroit ! L'architecture est incroyable et l'atmosphère est authentique. Je recommande vivement une visite guidée.",
           "date": "2025-11-20T14:30:00.000Z",
           "note": 5,
-          "approved": true
+          "approved": true,
+          "status": "approved"
         },
         {
           "id": "c2",
+          "userId": "user-2",
           "nom": "Sarah Dubois",
           "message": "Très belle médina, mais un peu bondée le week-end. Préférez y aller en semaine pour profiter du calme.",
           "date": "2025-11-18T10:15:00.000Z",
           "note": 4,
-          "approved": true
+          "approved": true,
+          "status": "approved"
+        },
+        {
+          "id": "c3",
+          "userId": "d7f7",
+          "nom": "hh",
+          "message": "Pas mal mais trop cher pour ce que c'est",
+          "date": "2025-11-19T16:45:00.000Z",
+          "note": 2,
+          "approved": true,
+          "status": "pending"
         }
       ]
     },
@@ -60,7 +74,28 @@
       "lieuxProches": [],
       "latitude": 36.8531,
       "longitude": 10.3231,
-      "comments": []
+      "comments": [
+        {
+          "id": "c4",
+          "userId": "user-1",
+          "nom": "Amine Khelifi",
+          "message": "Excellent site archéologique, vraiment instructif ! Les guides sont très compétents.",
+          "date": "2025-11-21T11:20:00.000Z",
+          "note": 5,
+          "approved": true,
+          "status": "approved"
+        },
+        {
+          "id": "c5",
+          "userId": "d7f7",
+          "nom": "hh",
+          "message": "Nullllllll !!! Pire visite jamais",
+          "date": "2025-11-22T09:00:00.000Z",
+          "note": 1,
+          "approved": false,
+          "status": "rejected"
+        }
+      ]
     }
   ],
   "admins": [
@@ -74,8 +109,9 @@
       "avatar": "images/medina.png",
       "phone": "+216 20 123 456",
       "dateCreated": "2024-01-15T10:00:00.000Z",
-      "dernierLogin": "2025-11-23T02:47:26.019Z",
-      "isActive": true
+      "dernierLogin": "2025-11-23T03:31:35.184Z",
+      "isActive": true,
+      "type": "admin"
     },
     {
       "id": "admin-2",
@@ -88,7 +124,8 @@
       "phone": "+216 22 456 789",
       "dateCreated": "2024-03-20T14:30:00.000Z",
       "dernierLogin": "2025-11-23T02:03:09.087Z",
-      "isActive": true
+      "isActive": true,
+      "type": "admin"
     },
     {
       "id": "admin-3",
@@ -101,7 +138,8 @@
       "phone": "+216 23 789 012",
       "dateCreated": "2024-06-10T09:15:00.000Z",
       "dernierLogin": "2025-11-23T02:03:21.062Z",
-      "isActive": true
+      "isActive": true,
+      "type": "admin"
     }
   ],
   "users": [
@@ -118,7 +156,9 @@
       "isActive": true,
       "favorites": [
         "1"
-      ]
+      ],
+      "type": "user",
+      "role": "user"
     },
     {
       "id": "user-2",
@@ -130,11 +170,13 @@
       "phone": "+216 55 123 456",
       "dateCreated": "2025-02-15T10:20:00.000Z",
       "dernierLogin": "2025-11-23T02:37:59.266Z",
-      "isActive": true,
+      "isActive": false,
       "favorites": [
         "1",
         "2"
-      ]
+      ],
+      "type": "user",
+      "role": "user"
     },
     {
       "id": "d7f7",
@@ -147,7 +189,51 @@
       "dateCreated": "2025-11-23T02:43:16.784Z",
       "dernierLogin": "2025-11-23T02:43:18.308Z",
       "isActive": true,
-      "favorites": []
+      "favorites": [],
+      "type": "user",
+      "role": "user"
+    }
+  ],
+  "comments": [
+    {
+      "id": "c1",
+      "userId": "user-1",
+      "siteId": "1",
+      "text": "Magnifique endroit ! L'architecture est incroyable et l'atmosphère est authentique. Je recommande vivement une visite guidée.",
+      "date": "2025-11-20T14:30:00.000Z",
+      "status": "approved"
+    },
+    {
+      "id": "c2",
+      "userId": "user-2",
+      "siteId": "1",
+      "text": "Très belle médina, mais un peu bondée le week-end. Préférez y aller en semaine pour profiter du calme.",
+      "date": "2025-11-18T10:15:00.000Z",
+      "status": "approved"
+    },
+    {
+      "id": "c3",
+      "userId": "d7f7",
+      "siteId": "1",
+      "text": "Pas mal mais trop cher pour ce que c'est",
+      "date": "2025-11-19T16:45:00.000Z",
+      "status": "pending"
+    },
+    {
+      "id": "c4",
+      "userId": "user-1",
+      "siteId": "2",
+      "text": "Excellent site archéologique, vraiment instructif ! Les guides sont très compétents.",
+      "date": "2025-11-21T11:20:00.000Z",
+      "status": "approved"
+    },
+    {
+      "id": "c5",
+      "userId": "d7f7",
+      "siteId": "2",
+      "text": "Nullllllll !!! Pire visite jamais",
+      "date": "2025-11-22T09:00:00.000Z",
+      "status": "rejected"
     }
   ]
 }
