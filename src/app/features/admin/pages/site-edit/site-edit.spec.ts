@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SiteEdit } from './site-edit';
+import { SiteEditComponent } from './site-edit';
 
 describe('SiteEdit', () => {
-  let component: SiteEdit;
-  let fixture: ComponentFixture<SiteEdit>;
+  let component: SiteEditComponent;
+  let fixture: ComponentFixture<SiteEditComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SiteEdit]
+      imports: [SiteEditComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(SiteEdit);
+    fixture = TestBed.createComponent(SiteEditComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

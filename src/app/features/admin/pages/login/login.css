@@ -1,10 +1,124 @@
-form {
+.login-container {
+  min-height: 100vh;
   display: flex;
-  flex-direction: column;
-  width: 260px;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
 }
 
-input {
-  margin: 10px 0;
-  padding: 6px;
+.login-card {
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  padding: 40px;
+  width: 100%;
+  max-width: 420px;
+  animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.login-icon {
+  font-size: 60px;
+  color: #667eea;
+  margin-bottom: 15px;
+}
+
+.login-header h2 {
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.login-header p {
+  font-size: 14px;
+}
+
+.login-form .form-label {
+  font-weight: 600;
+  color: #555;
+  font-size: 14px;
+}
+
+.login-form .input-group-text {
+  background: #f8f9fa;
+  border: 1px solid #ced4da;
+  border-right: none;
+  color: #667eea;
+}
+
+.login-form .form-control {
+  border-left: none;
+  padding: 12px 15px;
+  font-size: 15px;
+  transition: all 0.3s ease;
+}
+
+.login-form .form-control:focus {
+  box-shadow: none;
+  border-color: #667eea;
+}
+
+.login-form .input-group:focus-within .input-group-text {
+  border-color: #667eea;
+  color: #764ba2;
+}
+
+.login-form .btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  padding: 12px;
+  font-weight: 600;
+  font-size: 16px;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+.login-form .btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+.login-form .btn-primary:active {
+  transform: translateY(0);
+}
+
+.login-footer {
+  text-align: center;
+  margin-top: 25px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+.login-footer p {
+  font-size: 13px;
+}
+
+@media (max-width: 480px) {
+  .login-card {
+    padding: 30px 25px;
+  }
+
+  .login-icon {
+    font-size: 50px;
+  }
+
+  .login-header h2 {
+    font-size: 24px;
+  }
 }

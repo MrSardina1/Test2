@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SiteCrud } from './site-crud';
+import { SiteCrudComponent } from './site-crud';
 
 describe('SiteCrud', () => {
-  let component: SiteCrud;
-  let fixture: ComponentFixture<SiteCrud>;
+  let component: SiteCrudComponent;
+  let fixture: ComponentFixture<SiteCrudComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SiteCrud]
+      imports: [SiteCrudComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(SiteCrud);
+    fixture = TestBed.createComponent(SiteCrudComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

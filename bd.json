@@ -2,19 +2,45 @@
   "sites": [
     {
       "id": "1",
-      "name": "Médina de Tunis",
+      "nom": "Médina de Tunis",
       "localisation": "Tunis",
-      "photo": "assets/images/medina.jpg",
+      "photo": "assets/medina.png",
       "dateConstruction": "1600-01-01T00:00:00.000Z",
       "estClasse": true,
       "prixEntree": 0,
       "description": "Ancienne médina historique...",
       "categorie": "Médina",
-      "horaires": ["9:00-17:00", "Lun-Ferme"],
+      "horaires": [
+        "9:00-17:00",
+        "Lun-Ferme"
+      ],
       "visitesGuideesDisponibles": true,
-      "lieuxProches": [{"nom":"Mosquée Zitouna","type":"Religieux","distanceKm":0.1}],
+      "lieuxProches": [
+        {
+          "nom": "Mosquée Zitouna",
+          "type": "Religieux",
+          "distanceKm": 0.1
+        }
+      ],
       "latitude": 36.8065,
       "longitude": 10.1815,
+      "comments": []
+    },
+    {
+      "id": "2164",
+      "nom": "hassen",
+      "localisation": "hassen",
+      "photo": "assets/medina.png",
+      "dateConstruction": "2025-01-02",
+      "estClasse": true,
+      "prixEntree": 25,
+      "description": "jj",
+      "categorie": "uuu",
+      "horaires": [],
+      "visitesGuideesDisponibles": true,
+      "lieuxProches": [],
+      "latitude": 0,
+      "longitude": 0,
       "comments": []
     }
   ],
@@ -22,9 +48,9 @@
     {
       "id": "admin-1",
       "username": "admin",
-      "passwordHash": "admin123",
+      "password": "admin",
       "role": "admin",
-      "dernierLogin": null
+      "dernierLogin": "2025-11-23T00:32:07.335Z"
     }
   ]
 }

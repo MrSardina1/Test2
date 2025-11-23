@@ -10,18 +10,18 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./login.css']
 })
 export class LoginComponent {
-  email = '';
+  username = '';
   password = '';
 
   constructor(private auth: Auth, private router: Router) {}
 
   login() {
-    if (!this.email || !this.password) {
-      alert('Please enter email and password.');
+    if (!this.username || !this.password) {
+      alert('Please enter username and password.');
       return false;
     }
 
-    this.auth.login(this.email, this.password).subscribe({
+    this.auth.login(this.username, this.password).subscribe({
       next: () => {
         alert('Login successful!');
         this.router.navigate(['/admin']);
