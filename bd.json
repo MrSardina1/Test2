@@ -63,7 +63,7 @@
       "comments": []
     }
   ],
-  "users": [
+  "admins": [
     {
       "id": "admin-1",
       "username": "admin",
@@ -74,7 +74,7 @@
       "avatar": "images/medina.png",
       "phone": "+216 20 123 456",
       "dateCreated": "2024-01-15T10:00:00.000Z",
-      "dernierLogin": "2025-11-23T02:03:26.161Z",
+      "dernierLogin": "2025-11-23T02:47:26.019Z",
       "isActive": true
     },
     {
@@ -102,32 +102,52 @@
       "dateCreated": "2024-06-10T09:15:00.000Z",
       "dernierLogin": "2025-11-23T02:03:21.062Z",
       "isActive": true
+    }
+  ],
+  "users": [
+    {
+      "id": "user-1",
+      "username": "user1",
+      "email": "user1@example.com",
+      "password": "user123",
+      "fullName": "Amine Khelifi",
+      "avatar": "https://i.pravatar.cc/150?u=user1",
+      "phone": "+216 98 765 432",
+      "dateCreated": "2025-01-10T08:00:00.000Z",
+      "dernierLogin": "2025-11-23T02:46:41.436Z",
+      "isActive": true,
+      "favorites": [
+        "1"
+      ]
     },
     {
-      "id": "admin-4",
-      "username": "moderator2",
-      "email": "sarah.moderator@patrimoine.tn",
+      "id": "user-2",
+      "username": "sarah",
+      "email": "sarah@example.com",
       "password": "sarah123",
-      "role": "moderator",
-      "fullName": "Sarah Khelifi",
-      "avatar": "images/medina.png",
-      "phone": "+216 24 345 678",
-      "dateCreated": "2024-08-05T13:00:00.000Z",
-      "dernierLogin": "2025-11-20T09:10:00.000Z",
-      "isActive": true
+      "fullName": "Sarah Martinez",
+      "avatar": "https://i.pravatar.cc/150?u=sarah",
+      "phone": "+216 55 123 456",
+      "dateCreated": "2025-02-15T10:20:00.000Z",
+      "dernierLogin": "2025-11-23T02:37:59.266Z",
+      "isActive": true,
+      "favorites": [
+        "1",
+        "2"
+      ]
     },
     {
-      "id": "admin-5",
-      "username": "editor2",
-      "email": "karim.editor@patrimoine.tn",
-      "password": "karim123",
-      "role": "editor",
-      "fullName": "Karim Bouzid",
-      "avatar": "images/medina.png",
-      "phone": "+216 25 567 890",
-      "dateCreated": "2024-09-12T10:30:00.000Z",
-      "dernierLogin": "2025-11-19T14:55:00.000Z",
-      "isActive": false
+      "id": "d7f7",
+      "username": "hh",
+      "email": "hh@gmail.com",
+      "password": "hhhhhh",
+      "fullName": "hh",
+      "phone": "hh",
+      "avatar": "https://i.pravatar.cc/150?u=hh",
+      "dateCreated": "2025-11-23T02:43:16.784Z",
+      "dernierLogin": "2025-11-23T02:43:18.308Z",
+      "isActive": true,
+      "favorites": []
     }
   ]
 }

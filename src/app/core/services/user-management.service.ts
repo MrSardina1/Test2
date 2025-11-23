@@ -7,7 +7,7 @@ import { UtilisateurAdmin } from '../../code/models/utilisateur-admin.model';
   providedIn: 'root'
 })
 export class UserManagement {
-  private base = 'http://localhost:3000/users';
+  private base = 'http://localhost:3000/admins';
 
   constructor(private http: HttpClient) {}
 

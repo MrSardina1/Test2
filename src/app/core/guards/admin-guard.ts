@@ -10,7 +10,12 @@ export class AdminGuard implements CanActivate {
 
   canActivate(): boolean | UrlTree {
     const user = this.auth.getUser();
-    if (user && (user.role === 'admin' || user.role === 'super_admin')) return true;
+    const isAdmin = this.auth.isAdmin();
+
+    if (user && isAdmin) {
+      return true;
+    }
+
     return this.router.createUrlTree(['/login']);
   }
 }
